@@ -1,0 +1,1 @@
+export { hash } from './sha1';

@@ -1,0 +1,29 @@
+{
+  "name": "ce_book",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anthony La",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^14.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-streamify": "^1.0.2",
+    "gulp-typescript": "^3.1.4",
+    "gulp-uglify": "^2.0.1",
+    "merge2": "^1.0.3",
+    "tsify": "^3.0.1",
+    "typescript": "^2.1.6",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "vinyl-transform": "^1.0.0"
+  },
+  "dependencies": {
+    "polyfill-webcomponents": "^0.20150204.0"
+  }
+}
