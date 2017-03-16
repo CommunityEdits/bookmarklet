@@ -12,10 +12,18 @@ npm install
 gulp bundle
 ```
 
-# Dcoumentation
-The project uses the global variable `window.ce` for debugging convenience.
+# Usage
+Append the script to the document, and onload run:
+```
+window.ce.processPage(cssSelector);
+```
+where cssSelector is a string specifying the main content of the page, the html elements for which contain text which edits can be proposed for.
 
-The main challenge I had with this project has been getting a consistent interface and behavior across different websites and browsers. From my research, web components was the answer to this problem, but browsers that support it seem limited to Chrome for the moment.
+I no matching element is found, the rest of the script doesn't run. If no selector string is provided, then the script tries a few common guesses. These can be found in `src/tools/page.ts`.
+
+# Documentation
+
+The main challenge I had with this project has been getting a consistent interface and behavior across different websites and browsers. From my research, web components are the answer to this problem, but browsers that support it seem limited to Chrome for the moment.
 
 I attempted to use polyfills and web components libraries, but only managed to get poor performance/crashing/style bleed, so I gave up.
 
