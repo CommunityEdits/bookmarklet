@@ -44,6 +44,7 @@ function makeCEButton(options) {
             t.style[opt] = s_opts[opt];
         }
     }
+    // hack for removing scrolling behavior if necessary.
     var pointerFunc;
     // t.href = "javascript:loadCEScript();"
     t.onclick = function () {
@@ -85,17 +86,17 @@ function makeCEButton(options) {
         return t;
     }
 }
-/**
- * This is basically what happens when the bookmarklet gets clicked.
- */
-function test() {
-    var s = document.createElement("script");
-    s.src = "https://communityedits.com/scripts/loader.js";
-    s.onload = function () {
-        makeCEButton({
-            onScrollUp: true
-        });
-    };
-    document.head.appendChild(s);
-    //javascript:(function (){let s = document.createElement("script");s.src = "https://communityedits.com/loader.js";s.onload = () => {makeCEButton({onScrollUp: true})};document.head.appendChild(s);})();
-}
+// /**
+//  * This is basically what happens when the bookmarklet gets clicked.
+//  */
+// function test() {
+//     let s = document.createElement("script");
+//     s.src = "https://communityedits.com/scripts/loader.js";
+//     s.onload = () => {
+//         makeCEButton({
+//             onScrollUp: true
+//         })
+//     };
+//     document.head.appendChild(s);
+//     //javascript:(function (){let s = document.createElement("script");s.src = "https://communityedits.com/loader.js";s.onload = () => {makeCEButton({onScrollUp: true})};document.head.appendChild(s);})();
+// }

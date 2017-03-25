@@ -14,6 +14,7 @@ export function get_page_info(selector: string): IPageInfo | void {
     let element;
     let targets = [
         "div[itemprop='articleBody']",
+        "#chapterContent",
         ".entry-content",
         "#content",
         ".entry",
@@ -23,7 +24,8 @@ export function get_page_info(selector: string): IPageInfo | void {
         ".storytext",
         ".storycontent",
         ".CommonWhiteTypeOne",
-        ".articleText"
+        ".articleText",
+        ".cha-content"
     ];
     // Check the selector we're given.
     if (selector) {

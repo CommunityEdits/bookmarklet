@@ -13,7 +13,7 @@ interface Window {
  * Call the Community Edits script to process the element on the page specified by selector.
  * @param {*} selector 
  */
-function loadCEScript(selector) {
+function loadCEScript(selector: string) {
     let s = document.createElement('script');
     s.src = 'https://communityedits.com/scripts/bookmarklet/app.min.js';
     document.body.appendChild(s)
@@ -56,7 +56,8 @@ function makeCEButton(options: any = {}) {
         }
     }
 
-    let pointerFunc;
+    // hack for removing scrolling behavior if necessary.
+    let pointerFunc: any;
     // t.href = "javascript:loadCEScript();"
     t.onclick = () => {
         window.removeEventListener("scroll", pointerFunc);
@@ -103,18 +104,18 @@ function makeCEButton(options: any = {}) {
 }
 
 
-/**
- * This is basically what happens when the bookmarklet gets clicked.
- */
-function test() {
-    let s = document.createElement("script");
-    s.src = "https://communityedits.com/scripts/loader.js";
-    s.onload = () => {
-        makeCEButton({
-            onScrollUp: true
-        })
-    };
-    document.head.appendChild(s);
+// /**
+//  * This is basically what happens when the bookmarklet gets clicked.
+//  */
+// function test() {
+//     let s = document.createElement("script");
+//     s.src = "https://communityedits.com/scripts/loader.js";
+//     s.onload = () => {
+//         makeCEButton({
+//             onScrollUp: true
+//         })
+//     };
+//     document.head.appendChild(s);
 
-    //javascript:(function (){let s = document.createElement("script");s.src = "https://communityedits.com/loader.js";s.onload = () => {makeCEButton({onScrollUp: true})};document.head.appendChild(s);})();
-}
+//     //javascript:(function (){let s = document.createElement("script");s.src = "https://communityedits.com/loader.js";s.onload = () => {makeCEButton({onScrollUp: true})};document.head.appendChild(s);})();
+// }
