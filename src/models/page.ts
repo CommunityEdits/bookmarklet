@@ -90,9 +90,15 @@ class Page {
 
     updateWithProposal(p: IProposal) {
         this.p.then(_ => {
-            let newP = new Proposal(p);
-            this.proposals.push(newP);
-            newP.attach(this.io_coms);
+            // Update existing if present, else add new.
+            let existing = this.proposals.find(x => x.id == p.id);
+            if (existing) {
+                existing.commentsSection.updateComments(p.comments);
+            } else {
+                let newP = new Proposal(p);
+                this.proposals.push(newP);
+                newP.attach(this.io_coms);
+            }
         })
     }
 }

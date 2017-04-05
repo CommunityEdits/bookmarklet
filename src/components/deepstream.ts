@@ -116,7 +116,7 @@ export class DeepStreamer {
                 log.debug("Deepstream to", data);
                 if (data.evt == "msg") {
                     this.addMessage(data);
-                } else if (data.evt == "ec") {
+                } else if (data.evt == "ec" && data.url == window.location.href) {
                     this.getProposal(data.target).then((rv: any) => {
                         let p: IProposal = rv.proposal;
                         page.updateWithProposal(p);
@@ -124,6 +124,19 @@ export class DeepStreamer {
                         log.error("Deepstream update", reason);
                         throw reason;
                     })
+                } else if (data.evt == "pc") {
+                    let onPage = page.proposals.find(x => x.id == data.target);
+                    log.info("Target on page", onPage, data.target)
+
+                    if (onPage) {
+                        this.getProposal(data.target).then((rv: any) => {
+                            let p: IProposal = rv.proposal;
+                            page.updateWithProposal(p);
+                        }).catch((reason: string) => {
+                            log.error("Deepstream update", reason);
+                            throw reason;
+                        })
+                    }
                 }
             });
 
@@ -172,4 +185,9 @@ export class DeepStreamer {
     scrollToBot() {
         this.messagesElement.scrollTop = this.messagesElement.scrollHeight;
     }
+}
+
+
+function handleEvent(data: any) {
+
 }

@@ -22,7 +22,7 @@ gulp.task("bundle", function () {
 
     return browserify()
         .add('src/main.ts')
-        .plugin(tsify, { noImplicitAny: true })
+        .plugin(tsify, { noImplicitAny: false })
         .bundle()
         .pipe(source(outputFileName))
         .pipe(buffer())

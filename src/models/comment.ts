@@ -136,4 +136,31 @@ export class CommentsSection {
             c.insertBefore(this.inputDiv);
         }
     }
+
+    updateComments(allComments: any[]) {
+        // Avoid re-adding existing comments.
+        let old = this.comments.map(c => c.id);
+        let newComments = allComments.filter(i => old.indexOf(i.id) == -1);
+
+        // Place separator as necessary.
+        if (old.length) {
+            let h = document.createElement("hr");
+            h.style.width = "50%";
+            this.inputDiv.parentElement.insertBefore(h, this.inputDiv);
+        }
+
+        let i = 0;
+        for (let nc of newComments) {
+            let c = new Comment(nc);
+            this.comments.push(c);
+
+            if (i > 0) {
+                let halfSep = document.createElement("hr");
+                halfSep.style.width = "50%";
+                this.inputDiv.parentElement.insertBefore(halfSep, this.inputDiv);
+            }
+            c.insertBefore(this.inputDiv);
+            i = i + 1;
+        }
+    }
 }

@@ -75,8 +75,8 @@ export class Proposal implements IProposal {
         let status = document.createElement("span");
         status.textContent = `Status: [${this.getStatusStatement(this.status)}]`;
 
-        this.karmaSection = new KarmaSection(this);
-        this.element.appendChild(this.karmaSection.element);
+        // this.karmaSection = new KarmaSection(this);
+        // this.element.appendChild(this.karmaSection.element);
 
         this.commentsSection = new CommentsSection(this);
         this.element.appendChild(this.commentsSection.element);
@@ -84,7 +84,7 @@ export class Proposal implements IProposal {
         let buttonDiv = document.createElement("div");
         submenu_div.appendChild(buttonDiv);
         buttonDiv.style.textAlign = "center";
-        buttonDiv.appendChild(this.karmaSection.toggleButton)
+        // buttonDiv.appendChild(this.karmaSection.toggleButton)
         buttonDiv.appendChild(status);
         buttonDiv.appendChild(this.commentsSection.toggleButton);
     }
