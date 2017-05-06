@@ -149,7 +149,7 @@ export class CENoticeComponent extends HTMLElement {
     makeLinksDiv() {
         // https://mathiasbynens.github.io/rel-noopener/
         this.tabs.pages[2].innerHTML = `
-        <a rel="noopener" href="https://communityedits.com/#/s/${location.host}" target="_blank">Site page on Community Edits</a>
+        <a rel="noopener" href="https://communityedits.com/s/${location.host}" target="_blank">Site page on Community Edits</a>
         `;
     }
 

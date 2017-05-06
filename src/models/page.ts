@@ -89,10 +89,12 @@ class Page {
     }
 
     updateWithProposal(p: IProposal) {
+        log.debug("Updatting proposal", p);
         this.p.then(_ => {
             // Update existing if present, else add new.
             let existing = this.proposals.find(x => x.id == p.id);
             if (existing) {
+                existing.model.status = p.status;
                 existing.commentsSection.updateComments(p.comments);
             } else {
                 let newP = new Proposal(p);

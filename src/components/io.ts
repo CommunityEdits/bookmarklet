@@ -204,6 +204,7 @@ export class CEIOComponent extends HTMLElement {
      * Given known proposals from the system, display them.
      */
     add_proposal(proposal: Proposal) {
+        log.debug("adding proposal", proposal);
         this.proposed_edits.push(proposal);
         this.proposals_div.appendChild(proposal.element);
 

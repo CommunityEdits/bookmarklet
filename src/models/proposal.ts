@@ -1,4 +1,4 @@
-import { timeSince } from '../tools/formatting';
+import { timeSinceElement } from '../tools/formatting';
 import { log, differ } from '../services';
 import { CommentsSection } from './comment';
 import { KarmaSection } from './karma';
@@ -18,6 +18,8 @@ export class Proposal implements IProposal {
     merit: number;
     sin: number;
     comments: IComment[] = [];
+
+    model: IProposal;
 
     // The view for this edit.
     element: HTMLDivElement;
@@ -47,15 +49,14 @@ export class Proposal implements IProposal {
 
         this.comments = data.comments;
 
-        // Construct the view.
-        this.element = document.createElement("div");
-        this.element.className = "ce-proposal";
-        this.construct_view();
-
         log.info("proposal", this);
+        this.construct_view();
     }
 
     construct_view() {
+        this.element = document.createElement("div");
+        this.element.className = "ce-proposal";
+
         this.coreSection = new CoreSection(this);
         this.element.appendChild(this.coreSection.element);
         this.element.appendChild(document.createElement("hr"));
@@ -65,12 +66,13 @@ export class Proposal implements IProposal {
         this.element.appendChild(submenu_div);
 
         // On that menu tell us a bit about the proposal.
-        let label = document.createElement("span");
-        submenu_div.appendChild(label);
+        let author_date = document.createElement("span");
+        submenu_div.appendChild(author_date);
         // label.className = "ce-edit-submenu-label";
-        label.innerHTML = `Proposed by ${this.author.username} <span title='${new Date(this.dateCreated * 1000)}'>${timeSince(this.dateCreated * 1000)} ago</span>`;
-        label.style.display = "block";
-
+        author_date.innerHTML = `Proposed by ${this.author.username} `;
+        let date = timeSinceElement(this.dateCreated * 1000);
+        author_date.appendChild(date);
+        author_date.style.display = "block";
 
         let status = document.createElement("span");
         status.textContent = `Status: [${this.getStatusStatement(this.status)}]`;
@@ -87,6 +89,28 @@ export class Proposal implements IProposal {
         // buttonDiv.appendChild(this.karmaSection.toggleButton)
         buttonDiv.appendChild(status);
         buttonDiv.appendChild(this.commentsSection.toggleButton);
+
+        /**
+         * Build a proxy for our model.
+         * TODO: Replace old one time binding with this for updating.
+         */
+        let target = {};
+        let handler = {
+            set: (obj, prop, value) => {
+                log.debug("PROX", obj, prop, value);
+
+                if (prop == "status") {
+                    status.textContent = `Status: [${this.getStatusStatement(value)}]`;
+                }
+                obj[prop] = value;
+                return true;
+            }
+            // get: function (target, name) {
+            //     log.debug("PROX", target, name);
+            //     return name in target ? target[name] : 37;
+            // }
+        };
+        this.model = <IProposal>new Proxy(target, handler);
     }
 
     getStatusStatement(status: number) {
@@ -176,7 +200,7 @@ class CoreSection {
                 let color = part.added ? 'green' : part.removed ? 'red' : '';
                 let span = document.createElement('span');
                 span.style.background = color;
-                span.style.color = (color == "green")? "white": "black";
+                span.style.color = (color == "green") ? "white" : "black";
                 span.appendChild(document.createTextNode(part.value));
                 fragment.appendChild(span);
             });

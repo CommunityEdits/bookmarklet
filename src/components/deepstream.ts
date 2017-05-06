@@ -76,6 +76,7 @@ export class DeepStreamer {
     }
 
     getProposal(targetID: string) {
+        log.debug("Getting proposal data", targetID);
         let q = `
         query {
             proposal(id:"${targetID}") {
@@ -113,18 +114,16 @@ export class DeepStreamer {
             let site = p.status.context.id;
             this.channel = `site/${site}`;
             this.client.event.subscribe(this.channel, (data: any) => {
-                log.debug("Deepstream to", data);
+                log.debug("Deepstream event", data);
+
+                // Hack for chat/echoes.
                 if (data.evt == "msg") {
                     this.addMessage(data);
-                } else if (data.evt == "ec" && data.url == window.location.href) {
-                    this.getProposal(data.target).then((rv: any) => {
-                        let p: IProposal = rv.proposal;
-                        page.updateWithProposal(p);
-                    }).catch((reason: string) => {
-                        log.error("Deepstream update", reason);
-                        throw reason;
-                    })
-                } else if (data.evt == "pc") {
+                    return;
+                }
+
+                // Handle a newly created post/comment.
+                if (data.evt == "pc") {
                     let onPage = page.proposals.find(x => x.id == data.target);
                     log.info("Target on page", onPage, data.target)
 
@@ -137,7 +136,29 @@ export class DeepStreamer {
                             throw reason;
                         })
                     }
+                    return;
                 }
+
+                // Ignore any edit proposals for other pages.
+                if (data.url !== window.location.href) {
+                    return;
+                }
+
+                // Ignore events not related to edits.
+                // Edit rejects come with resolves (ex) so there's no point listening for them.
+                if (["ec", "ea", "ex"].indexOf(data.evt) == -1) {
+                    log.debug("Unhandled event", data);
+                    return;
+                }
+
+                log.debug("Handling event", data);
+                this.getProposal(data.target).then((rv: any) => {
+                    let p: IProposal = rv.proposal;
+                    page.updateWithProposal(p);
+                }).catch((reason: string) => {
+                    log.error("Deepstream update", reason);
+                    throw reason;
+                })
             });
 
             this.getHistory();
